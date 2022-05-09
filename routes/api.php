@@ -8,11 +8,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('search-token','UserController@searchToken');
+Route::post('search-token','UserController@searchToken');
 Route::group(['prefix' => 'auth'], function () {
     Route::post('register','RegisterController@register');
     Route::post('login','LoginController@login');
     Route::post('search-email','ForgotPasswordController@searchEmail');
+    Route::post('change-password','ForgotPasswordController@resetPassword');
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('logout','LoginController@Logout');

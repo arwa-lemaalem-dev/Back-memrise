@@ -36,7 +36,7 @@ class RegisterController extends Controller
 
         return response()->json([
             'etat' => "Erreur du serveur !!!Réessayer s'il vous plaît",
-            'status' => 200
+            'status' => 500
         ]);
     }
 }
