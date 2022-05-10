@@ -16,6 +16,8 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('change-password','ForgotPasswordController@resetPassword');
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
+        Route::get('show-projects','ProjectController@list');
+
         Route::get('logout','LoginController@Logout');
     });
 });

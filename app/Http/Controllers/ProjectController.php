@@ -9,29 +9,34 @@ use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
-    public function list()
+    public function list():JsonResponse
     {
         $liste=Projects::all();
         if($liste)
         {
-            // return response()->json([
-            //     'etat' =>'Welcome' .' ' .ucfirst($user->name) .' in your Application ( ' .ucfirst($user->work_space) .' )',
-            //     'status' => 200,
-            //     'token' => $token,
-            //     'user' => $user,
-            // ]);
+            return response()->json([
+                'status' => 200,
+                'projects' =>$liste,
+            ]);
         }
     }
 
     public function create(Request $request):JsonResponse
     {
+        $name = '/projects/' . $request->name_project.'-'.uniqid() . '.' . "jpg";
+
         $project=Projects::create([
-            'name_project'=>request('name_project'),
-            'deadline'=>request('deadline'),
-            'user_id'=>Auth::id()
+            'name_project'=>$request->name_project,
+            'deadline'=>$request->deadline,
+            'url'=>$request->url,
+            'user_id'=>Auth::id(),
+            'logo'=>$name,
+           'status'=>'Créé'
         ]);
         if($project)
         {
+            $logo = $request->file('logo');
+            $logo->storePubliclyAs('public', $name);
             return response()->json([
                 'status'=>200,
                 'response'=>'Projet créé avec succès',
