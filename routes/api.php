@@ -9,6 +9,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::post('search-token','UserController@searchToken');
+Route::post('valid-session','UserController@validSession');
+
 Route::group(['prefix' => 'auth'], function () {
     Route::post('register','RegisterController@register');
     Route::post('login','LoginController@login');
@@ -17,6 +19,7 @@ Route::group(['prefix' => 'auth'], function () {
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('show-projects','ProjectController@list');
+
 
         Route::get('logout','LoginController@Logout');
     });
