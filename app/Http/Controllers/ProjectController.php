@@ -38,7 +38,7 @@ class ProjectController extends Controller
             $logo = $request->file('logo');
             $logo->storePubliclyAs('public', $name);
             return response()->json([
-                'status'=>200,
+                'status'=>201,
                 'response'=>'Projet créé avec succès',
                 'user_id'=>Auth::id()
 

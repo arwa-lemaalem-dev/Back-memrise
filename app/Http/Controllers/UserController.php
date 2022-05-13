@@ -38,8 +38,7 @@ class UserController extends Controller
     public function validSession(Request $request): JsonResponse
     {
         $now = strtotime(Carbon::now());
-        $user = User::find(request('id'));
-
+        $user = User::where('id',request('id'))->first();
         if ($user) {
             $expired_at = strtotime($user->tokens[0]->created_at);
 

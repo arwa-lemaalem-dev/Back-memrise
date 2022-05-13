@@ -20,6 +20,11 @@ Route::group(['prefix' => 'auth'], function () {
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('show-projects','ProjectController@list');
 
+        Route::get('show-tasks-project','TaskController@show');
+        Route::post('add-task','TaskController@create');
+        Route::post('delete-task','TaskController@delete');
+        Route::post('update-task','TaskController@update');
+
 
         Route::get('logout','LoginController@Logout');
     });

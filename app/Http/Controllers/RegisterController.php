@@ -18,10 +18,10 @@ class RegisterController extends Controller
         }
         $name = '/avatars/' . uniqid() . '.' . "jpg";
         $user = User::create([
-            'name' => $request->name,
+            'name' => ucfirst($request->name),
             'password' => bcrypt($request->password),
             'email' => $request->email,
-            'work_space' => $request->work_space,
+            'work_space' => ucfirst($request->work_space),
             'avatar'=>$name
         ]);
         if ($user) {
@@ -29,7 +29,7 @@ class RegisterController extends Controller
             $file->storePubliclyAs('public', $name);
             return response()->json([
                 'etat' => "L'utilisateur a créé avec succès",
-                'status' => 200
+                'status' => 201
             ]);
         }
 
