@@ -26,9 +26,9 @@ class TaskController extends Controller
 
     public function create(Request $request): JsonResponse
     {
-        if ($request->project_id!=null && $request->title!=null) {
+        if ($request->project_id != null && $request->title != null) {
             $task = Tasks::create([
-                'name' => ucfirst ($request->title),
+                'name' => ucfirst($request->title),
                 'project_id' => $request->project_id,
                 'status' => 0,
             ]);
@@ -43,12 +43,11 @@ class TaskController extends Controller
         ]);
     }
 
-    public function delete(Request $request):JsonResponse{
-        if($request->task_id)
-        {
-            $task=Tasks::where('id',$request->task_id)->delete();
-            if($task)
-            {
+    public function delete(Request $request): JsonResponse
+    {
+        if ($request->task_id) {
+            $task = Tasks::where('id', $request->task_id)->delete();
+            if ($task) {
                 return response()->json([
                     'status' => 200,
                 ]);
@@ -59,27 +58,43 @@ class TaskController extends Controller
         ]);
     }
 
-    public function update(Request $request):JsonResponse{
-        if($request->task_id)
-        {
-            $task=Tasks::where('id',$request->task_id)->first();
-            if($task)
-            {
-                if($task->status==0)
-                {
+    public function update(Request $request): JsonResponse
+    {
+        if ($request->task_id) {
+            $task = Tasks::where('id', $request->task_id)->first();
+            if ($task) {
+                if ($task->status == 0) {
                     $task->update([
-                        'status'=>1
+                        'status' => 1
                     ]);
-                }else
-                {
+                } else {
                     $task->update([
-                        'status'=>0
+                        'status' => 0
                     ]);
                 }
                 return response()->json([
                     'status' => 200,
                 ]);
             }
+        }
+        return response()->json([
+            'status' => 404,
+        ]);
+    }
+
+    public function updateCurrentTask(Request $request): JsonResponse
+    {
+        $task = Tasks::where('id', $request->task_id)->first();
+        if ($task) {
+            Tasks::where('project_id', $task->project_id)->update([
+                'current_task' => 0
+            ]);
+            $task->update([
+                'current_task' => 1
+            ]);
+            return response()->json([
+                'status' => 200,
+            ]);
         }
         return response()->json([
             'status' => 404,

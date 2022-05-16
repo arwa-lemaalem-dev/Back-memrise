@@ -23,7 +23,8 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('show-tasks-project','TaskController@show');
         Route::post('add-task','TaskController@create');
         Route::post('delete-task','TaskController@delete');
-        Route::post('update-task','TaskController@update');
+        Route::post('update-task', 'TaskController@update');
+        Route::post('update-task-current', 'TaskController@updateCurrentTask');
 
 
         Route::get('logout','LoginController@Logout');
@@ -35,5 +36,3 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::post('create-project','ProjectController@create');
     });
 });
-
-
