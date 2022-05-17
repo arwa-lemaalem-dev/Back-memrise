@@ -38,22 +38,26 @@ class UserController extends Controller
     public function validSession(Request $request): JsonResponse
     {
         $now = strtotime(Carbon::now());
-        $user = User::where('id',request('id'))->first();
+        $user = User::where('id', $request->id)->first();
         if ($user) {
-            $expired_at = strtotime($user->tokens[0]->created_at);
+            if (count($user->tokens) != 0) {
+                $expired_at = strtotime($user->tokens[0]->created_at);
 
-            if (($now - $expired_at) / 60 <=config('memrise.SESSION_LIFETIME')) {
-                // $user->tokens()->delete();
-                return response()->json([
-                    'status' => 200,
-                ]);
-            } else {
-                $user->tokens()->delete();
+                if (
+                    ($now - $expired_at) / 60 <=
+                    config('memrise.SESSION_LIFETIME')
+                ) {
+                    // $user->tokens()->delete();
+                    return response()->json([
+                        'status' => 200,
+                    ]);
+                } else {
+                    $user->tokens()->delete();
+                }
             }
         }
-
         return response()->json([
-            'status' =>  403,
+            'status' => 403,
         ]);
     }
 }

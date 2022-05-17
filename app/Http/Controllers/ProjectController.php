@@ -59,4 +59,24 @@ class ProjectController extends Controller
             'response' => "Erreur du serveur !!!Réessayer s'il vous plaît",
         ]);
     }
+
+    public function delete(Request $request):JsonResponse
+    {
+        $project=Projects::where('id',$request->project_id)->first();
+        if($project)
+        {
+            $del=$project->delete();
+            if($del)
+            {
+                return response()->json([
+                    'status' => 200,
+                    'response' => "Suppression terminée avec succés",
+                ]);
+            }
+        }
+        return response()->json([
+            'status' => 404,
+            'response' => "Erreur du serveur !!!Réessayer s'il vous plaît",
+        ]);
+    }
 }
