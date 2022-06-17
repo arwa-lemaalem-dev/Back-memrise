@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateTaskRequest;
+use App\Models\Projects;
 use App\Models\Tasks;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -24,22 +26,26 @@ class TaskController extends Controller
         ]);
     }
 
-    public function create(Request $request): JsonResponse
+    public function create(CreateTaskRequest $request): JsonResponse
     {
         if ($request->project_id != null && $request->title != null) {
-            $task = Tasks::create([
-                'name' => ucfirst($request->title),
-                'project_id' => $request->project_id,
-                'status' => 0,
-            ]);
-            if ($task) {
-                return response()->json([
-                    'status' => 201,
+            $project = Projects::where('id', $request->project_id)->first();
+            if ($project) {
+                $task = Tasks::create([
+                    'name' => ucfirst($request->title),
+                    'project_id' => $request->project_id,
+                    'status' => 0,
                 ]);
+                if ($task) {
+                    return response()->json([
+                        'status' => 201,
+                    ]);
+                }
             }
         }
         return response()->json([
-            'status' => 404,
+            'status' => 401,
+            'message' => 'Unauthenticated'
         ]);
     }
 
