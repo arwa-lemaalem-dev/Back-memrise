@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -10,14 +11,15 @@ use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
-    public function login():JsonResponse
-    {$user = User::where('email', request('email'))->first();
+    public function login(LoginRequest $request): JsonResponse
+    {
+        $user = User::where('email', $request->email)->first();
         if ($user) {
-            if (Hash::check(request('password'),$user->password)) {
-                $token=$user->createToken(time())->plainTextToken;
-                session(['token'=>$token,'user'=>Auth::user()]);
+            if (Hash::check($request->password, $user->password)) {
+                $token = $user->createToken(time())->plainTextToken;
+                session(['token' => $token, 'user' => Auth::user()]);
                 return response()->json([
-                    'etat' =>'Bienvenue' .' ' .ucfirst($user->name) .' dans votre application ( ' .ucfirst($user->work_space) .' )',
+                    'etat' => 'Bienvenue' . ' ' . ucfirst($user->name) . ' dans votre application ( ' . ucfirst($user->work_space) . ' )',
                     'status' => 200,
                     'token' => $token,
                     'user' => $user,
@@ -25,7 +27,7 @@ class LoginController extends Controller
             }
             return response()->json([
                 'etat' =>
-                    'Vos identifiants ne correspondent pas à nos enregistrements.',
+                'Vos identifiants ne correspondent pas à nos enregistrements.',
                 'status' => 404,
             ]);
         }
@@ -35,12 +37,12 @@ class LoginController extends Controller
         ]);
     }
 
-    public function Logout(Request $request):JsonResponse
+    public function Logout(Request $request): JsonResponse
     {
         $request->user()->tokens()->delete();
         session()->flush();
         return response()->json([
-            'status' =>200,
+            'status' => 200,
         ]);
     }
 }

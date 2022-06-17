@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
 class RegisterController extends Controller
 {
-    public function register(Request $request):JsonResponse
+    public function register(RegisterRequest $request): JsonResponse
     {
-        if (User::where('email', request('email'))->first()) {
+        if (User::where('email', $request->email)->first()) {
             return response()->json([
                 'etat' => "l'email existe déjà",
                 'status' => 403
@@ -22,11 +23,13 @@ class RegisterController extends Controller
             'password' => bcrypt($request->password),
             'email' => $request->email,
             'work_space' => ucfirst($request->work_space),
-            'avatar'=>$name
+            'avatar' => $request->avatar ? $name : null
         ]);
         if ($user) {
-            $file = $request->file('img_profile');
-            $file->storePubliclyAs('public', $name);
+            if ($request->avatar) {
+                $file = $request->file('img_profile');
+                $file->storePubliclyAs('public', $name);
+            }
             return response()->json([
                 'etat' => "L'utilisateur a créé avec succès",
                 'status' => 201

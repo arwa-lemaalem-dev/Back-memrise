@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProjectRequest;
 use App\Models\Projects;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Tests\Feature\ProjectTest;
 
 class ProjectController extends Controller
 {
@@ -27,7 +29,7 @@ class ProjectController extends Controller
         }
     }
 
-    public function create(Request $request): JsonResponse
+    public function create(ProjectRequest $request): JsonResponse
     {
         if ($request->file('logo')) {
             $name = '/projects/' . $request->name_project . '-' . uniqid() . '.' . "jpg";
