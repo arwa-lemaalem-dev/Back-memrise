@@ -1,7 +1,7 @@
 # Memrise (Back-End VueJs3)</h1>
 
 ## Link of Front-end Memrise : 
-<a href="https://github.com/arwa-lemaalem-dev/front-end-memrise">Back-end-memrise</a>
+<a href="https://github.com/arwa-lemaalem-dev/front-end-memrise">Front-end-memrise</a>
 ## Requirements
 
 -   PHP >= 7.3
