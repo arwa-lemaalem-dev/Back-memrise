@@ -17,6 +17,7 @@ class LoginTest extends TestCase
                 config('memrise.APP_URL') . '/api/user/login',
                 $user
             );
+
         $response->assertStatus(200);
     }
 

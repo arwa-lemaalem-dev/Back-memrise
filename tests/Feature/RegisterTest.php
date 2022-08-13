@@ -14,13 +14,13 @@ class RegisterTest extends TestCase
     public function test_register_success()
     {
         $user = [
-            "name"=>"arwa",
-            "password"=>"PassW0rd!",
-            "email"=>"arwa@gmail.com"
+            "name" => "arwa",
+            "password" => "PassW0rd!",
+            "email" => "arwa@gmail.com"
         ];
         $response = $this->withHeaders(['Accept' => 'application/json'])
             ->post(
-                config('memrise.APP_URL') .'/api/user/register',
+                config('memrise.APP_URL') . '/api/user/register',
                 $user
             );
         $response->assertStatus(200);
@@ -29,12 +29,12 @@ class RegisterTest extends TestCase
     public function test_register_failure()
     {
         $user = [
-            "name"=>"arwa",
-            "email"=>"arwa@gmail.com"
+            "name" => "arwa",
+            "email" => "arwa@gmail.com"
         ];
         $response = $this->withHeaders(['Accept' => 'application/json'])
             ->post(
-                config('memrise.APP_URL') .'/api/user/register',
+                config('memrise.APP_URL') . '/api/user/register',
                 $user
             );
         $response->assertStatus(200);

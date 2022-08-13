@@ -23,7 +23,7 @@ class RegisterController extends Controller
             'password' => bcrypt($request->password),
             'email' => $request->email,
             'work_space' => ucfirst($request->work_space),
-            'avatar' => $request->avatar ? $name : null
+            'avatar' => '/avatars/62abab43c2ef4.jpg'
         ]);
         if ($user) {
             if ($request->avatar) {
